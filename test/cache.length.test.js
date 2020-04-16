@@ -1,14 +1,14 @@
 const JustCache = require("..");
 const faker = require("faker");
 
-describe("Just Cache clean", () => {
+describe("Just Cache count", () => {
 
-	test("Should success to clean all cache", () => {
+	test("Should count the cache stored keys", () => {
 		const cache = new JustCache();
 		const key = faker.random.word();
 		const value = faker.random.word();
 
 		cache.set(key, value);
-		expect(cache.length).toBe(1);
+		expect(cache.count()).toBe(1);
 	});
 });

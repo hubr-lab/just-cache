@@ -1,9 +1,9 @@
 const JustCache = require("..");
 const faker = require("faker");
 
-describe("Just Cache clean", () => {
+describe("Just Cache delete", () => {
 
-	test("Should success to clean all cache", () => {
+	test("Should delete from just cache", () => {
 		const cache = new JustCache();
 		const key = faker.random.word();
 		const value = faker.random.word();

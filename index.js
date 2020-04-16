@@ -150,7 +150,7 @@ class JustCache {
 		return Object.keys(this._data);
 	}
 
-	get length() {
+	count() {
 		return this.keys().length;
 	}
 }

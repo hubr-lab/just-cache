@@ -1,9 +1,9 @@
 const JustCache = require("..");
 const faker = require("faker");
 
-describe("Just Cache get", () => {
+describe("Just Cache has", () => {
 
-	test("Should success get setted cache", () => {
+	test("Should success has setted cache", () => {
 		const cache = new JustCache();
 		const key = faker.random.word();
 		const value = faker.random.word();

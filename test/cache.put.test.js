@@ -1,9 +1,9 @@
 const JustCache = require("..");
 const faker = require("faker");
 
-describe("Just Cache set", () => {
+describe("Just Cache put", () => {
 
-	test("Should success cache set", () => {
+	test("Should success cache put", () => {
 		const cache = new JustCache();
 		const key = faker.random.word();
 		const value = faker.random.word();
@@ -12,7 +12,7 @@ describe("Just Cache set", () => {
 		expect(cache.has(key)).toBeTruthy();
 	});
 
-  test("Should success cache set object", () => {
+  test("Should success cache put object", () => {
 		const cache = new JustCache();
 		const key = faker.random.word();
 		const message = faker.random.words(5);
@@ -27,7 +27,7 @@ describe("Just Cache set", () => {
 		});
 	});
 
-	test("Should success cache set with ttl", () => {
+	test("Should success cache put with ttl", () => {
 		const cache = new JustCache();
 		const key = faker.random.word();
 		const value = faker.random.word();
@@ -36,7 +36,7 @@ describe("Just Cache set", () => {
 		expect(cache.has(key)).toBeTruthy();
 	});
 
-	test("Should success cache set with undefined ttl", () => {
+	test("Should success cache put with undefined ttl", () => {
 		const cache = new JustCache();
 		const key = faker.random.word();
 		const key2 = faker.random.word();
@@ -49,7 +49,7 @@ describe("Just Cache set", () => {
 		expect(cache.has(key2)).toBeTruthy();
 	});
 
-	test("Should success cache set with ttl zero expired", (done) => {
+	test("Should success cache put with ttl zero expired", (done) => {
 		const cache = new JustCache();
 		const key = faker.random.word();
 		const value = faker.random.word();
@@ -61,7 +61,7 @@ describe("Just Cache set", () => {
 		}, 0);
 	});
 
-	test("Should success cache set with ttl expiration", (done) => {
+	test("Should success cache put with ttl expiration", (done) => {
 		const cache = new JustCache();
 		const key = faker.random.word();
 		const value = faker.random.word();
