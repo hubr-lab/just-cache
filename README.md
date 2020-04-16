@@ -17,7 +17,6 @@ cache.get("message"); // "this new message";
 
 Set TTL on storage cache
 
-
 ```js
 const cache = new JustCache({
     ttl: 10 // seconds
@@ -34,6 +33,16 @@ cache.count(); // 1
 
 cache.get("another"); // 'with me'
 
+
+```
+
+Set memory storage bytes limit.
+If new values ​​exceed the memory limit, the first key in the queue will be removed during the sending of the new value.
+
+```js
+const cache = new JustCache({
+    limit: 100 // in bytes
+});
 
 ```
 

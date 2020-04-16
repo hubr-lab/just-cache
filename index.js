@@ -110,7 +110,15 @@ class JustCache {
 	constructor (options = {}) {
 
 		this._data = {};
+		this._storageOrder = [];
 		this._options = {};
+
+		if (options.limit !== null && options.limit !== undefined) {
+			if (typeof options.limit !== "number" || (options.limit && options.limit < 0)) {
+				throw new Error("Property options limit is invalid");
+			}
+			this._options.limit = options.limit;
+		}
 
 		if (options.ttl !== null && options.ttl !== undefined) {
 			validateTtl(options.ttl);
@@ -146,6 +154,20 @@ class JustCache {
 		// dont save to has expired setted ttl
 		if (ttl === 0) {
 			return;
+		}
+
+		const normalizeCache = () => {
+			if (this._options.limit < (this.size() + MemoryManager.getSize(value))) {
+				const [firstKey] = this.keys();
+				if (firstKey) {
+					this.delete(firstKey);
+					normalizeCache();
+				}
+			}
+		}
+
+		if (this._options.limit < (this.size() + MemoryManager.getSize(value))) {
+			normalizeCache();
 		}
 
 		// clean cache time out case exists
@@ -197,6 +219,29 @@ class JustCache {
 
 		if (ttl === 0) {
 			return;
+		}
+
+		const normalizeCache = () => {
+			if (this._options.limit < (this.size() + MemoryManager.getSize(value))) {
+				const [firstKey] = this.keys();
+				if (firstKey) {
+					this.delete(firstKey);
+					normalizeCache();
+				}
+			}
+		}
+
+		if (this._options.limit < (this.size() + MemoryManager.getSize(value))) {
+			normalizeCache();
+		}
+
+		if (this._options.limit !== null || this._options.limit !== undefined) {
+			if (this._options.limit < (this.size() + MemoryManager.getSize(value))) {
+				const firstKey = Object.keys(this.keys()).slice(0, 1);
+				if (firstKey) {
+					this.delete(firstKey);
+				}
+			}
 		}
 
 		ttl = ttl || this._options.ttl;

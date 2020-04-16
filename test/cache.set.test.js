@@ -123,4 +123,18 @@ describe("Just Cache set", () => {
 		expect(() => cache.set(cache, key, "must fail", [])).toThrowError(Error);
 		expect(() => cache.set(cache, key, "must fail", " --- ")).toThrowError(Error);
 	});
+
+	test("Should success with size control", () => {
+		const cache = new JustCache({
+			limit: 19
+		});
+
+		cache.set("value1", "var");
+		cache.set("value2", "anot");
+		cache.set("value3", "sss");
+
+		expect(cache.get("value1")).toBeNull();
+		expect(cache.size()).toBe(14);
+		expect(cache.count()).toBe(2);
+	});
 });
