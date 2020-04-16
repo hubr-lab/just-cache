@@ -1,0 +1,27 @@
+const JustCache = require("..");
+const faker = require("faker");
+
+describe("Just Cache clean", () => {
+
+	test("Should success to clean all cache", () => {
+		const cache = new JustCache();
+		const key = faker.random.word();
+		const value = faker.random.word();
+
+		cache.set(key, value);
+
+		cache.delete(key);
+		expect(cache.has(key)).not.toBeTruthy();
+	});
+
+	test("Should fail to invalid key", () => {
+		const cache = new JustCache();
+
+		expect(() => cache.delete({})).toThrowError(Error);
+		expect(() => cache.delete(25)).toThrowError(Error);
+		expect(() => cache.delete([])).toThrowError(Error);
+		expect(() => cache.delete(null)).toThrowError(Error);
+		expect(() => cache.delete(undefined)).toThrowError(Error);
+		expect(() => cache.delete(new JustCache())).toThrowError(Error);
+	});
+});
