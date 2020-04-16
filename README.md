@@ -5,9 +5,9 @@ Simple in-memory cache manager and controller for Node JS with TTL and storage s
 
 ```js
 
-const JustCache = require("just-cache");
+const Just = require("just-cache");
 
-const cache = new JustCache();
+const cache = new Just();
 
 cache.set("message", "this text message");
 cache.put("message", "this new message");
@@ -78,7 +78,7 @@ Count all stored keys.
 Set TTL on storage cache
 
 ```js
-const cache = new JustCache({
+const cache = new Just({
     ttl: 10 // seconds
 });
 
@@ -100,7 +100,7 @@ Set memory storage bytes limit.
 If new values ​​exceed the memory limit, the first key in the queue will be removed during the sending of the new value.
 
 ```js
-const cache = new JustCache({
+const cache = new Just({
     limit: 100 // in bytes
 });
 
