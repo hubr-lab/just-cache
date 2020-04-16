@@ -166,8 +166,10 @@ class JustCache {
 			}
 		}
 
-		if (this._options.limit < (this.size() + MemoryManager.getSize(value))) {
-			normalizeCache();
+		if (this._options.limit !== null || this._options.limit !== undefined) {
+			if (this._options.limit < (this.size() + MemoryManager.getSize(value))) {
+				normalizeCache();
+			}
 		}
 
 		// clean cache time out case exists
@@ -231,16 +233,9 @@ class JustCache {
 			}
 		}
 
-		if (this._options.limit < (this.size() + MemoryManager.getSize(value))) {
-			normalizeCache();
-		}
-
 		if (this._options.limit !== null || this._options.limit !== undefined) {
 			if (this._options.limit < (this.size() + MemoryManager.getSize(value))) {
-				const firstKey = Object.keys(this.keys()).slice(0, 1);
-				if (firstKey) {
-					this.delete(firstKey);
-				}
+				normalizeCache();
 			}
 		}
 
