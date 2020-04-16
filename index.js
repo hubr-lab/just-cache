@@ -156,8 +156,11 @@ class JustCache {
 			return;
 		}
 
-		const normalizeCache = () => {
-			if (this._options.limit < (this.size() + MemoryManager.getSize(value))) {
+		const normalizeCache = (valueSize) => {
+			const size = this.size();
+			const preventSize = size + valueSize;
+
+			if (preventSize > this._options.limit) {
 				const [firstKey] = this.keys();
 				if (firstKey) {
 					this.delete(firstKey);
@@ -166,10 +169,12 @@ class JustCache {
 			}
 		}
 
-		if (this._options.limit !== null || this._options.limit !== undefined) {
-			if (this._options.limit < (this.size() + MemoryManager.getSize(value))) {
-				normalizeCache();
+		if (this._options.limit !== null && this._options.limit !== undefined) {
+			const valueSize = MemoryManager.getSize(value);
+			if (valueSize > this._options.limit) {
+				return;
 			}
+			normalizeCache(valueSize);
 		}
 
 		// clean cache time out case exists
@@ -223,8 +228,11 @@ class JustCache {
 			return;
 		}
 
-		const normalizeCache = () => {
-			if (this._options.limit < (this.size() + MemoryManager.getSize(value))) {
+		const normalizeCache = (valueSize) => {
+			const size = this.size();
+			const preventSize = size + valueSize;
+
+			if (preventSize > this._options.limit) {
 				const [firstKey] = this.keys();
 				if (firstKey) {
 					this.delete(firstKey);
@@ -233,10 +241,12 @@ class JustCache {
 			}
 		}
 
-		if (this._options.limit !== null || this._options.limit !== undefined) {
-			if (this._options.limit < (this.size() + MemoryManager.getSize(value))) {
-				normalizeCache();
+		if (this._options.limit !== null && this._options.limit !== undefined) {
+			const valueSize = MemoryManager.getSize(value);
+			if (valueSize > this._options.limit) {
+				return;
 			}
+			normalizeCache(valueSize);
 		}
 
 		ttl = ttl || this._options.ttl;

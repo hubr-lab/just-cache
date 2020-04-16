@@ -1,6 +1,6 @@
 {
   "name": "just-cache",
-  "version": "1.5.6",
+  "version": "1.5.8",
   "description": "Simple in-memory cache manager and controller for Node JS with TTL and storage size limit",
   "author": {
     "name": "Gleisson Ricardo",
