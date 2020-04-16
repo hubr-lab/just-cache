@@ -29,7 +29,6 @@ $ npm install just-cache --save
 - Cache manager with basic and simples commands.
 - Storage size info.
 - High test coverage.
-- Typescript compatible.
 - Automatic storage limit management.
 
 ## Usage
