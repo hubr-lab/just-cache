@@ -24,14 +24,13 @@ const cache = new JustCache({
 });
 
 cache.set("message", "without me");
-cache.get("message"); // 'with me'
-
 cache.set("another", "with me", 30 /* seconds */);
+cache.get("message"); // 'with me'
 
 // ... after 10 seconds:
 cache.get("message"); // null
 cache.has("message"); // false
-cache.count(); // 0
+cache.count(); // 1
 
 cache.get("another"); // 'with me'
 
