@@ -157,14 +157,11 @@ class JustCache {
 		}
 
 		const normalizeCache = (valueSize) => {
-			const size = this.size();
-			const preventSize = size + valueSize;
-
-			if (preventSize > this._options.limit) {
+			if ((this.size() + valueSize) > this._options.limit) {
 				const [firstKey] = this.keys();
 				if (firstKey) {
 					this.delete(firstKey);
-					normalizeCache();
+					normalizeCache(valueSize);
 				}
 			}
 		}
@@ -229,14 +226,11 @@ class JustCache {
 		}
 
 		const normalizeCache = (valueSize) => {
-			const size = this.size();
-			const preventSize = size + valueSize;
-
-			if (preventSize > this._options.limit) {
+			if ((this.size() + valueSize) > this._options.limit) {
 				const [firstKey] = this.keys();
 				if (firstKey) {
 					this.delete(firstKey);
-					normalizeCache();
+					normalizeCache(valueSize);
 				}
 			}
 		}
