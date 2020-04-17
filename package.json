@@ -1,6 +1,6 @@
 {
   "name": "just-cache",
-  "version": "1.6.4",
+  "version": "1.6.5",
   "description": "Simple in-memory cache manager and controller for Node JS with TTL and storage size limit",
   "author": {
     "name": "Gleisson Ricardo",
@@ -10,6 +10,7 @@
   "license": "MIT",
   "repository": "hubr-lab/just-cache",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "lint": "eslint .",
     "test": "jest",
