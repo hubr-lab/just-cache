@@ -96,18 +96,23 @@ class MemoryManager {
     if (typeof bytes !== "number") {
       throw new Error("value size it's not a number");
     }
-    if (bytes < 0) {
-      return "0 bytes";
+
+    const sizes = ["bytes", "KiB", "MiB", "GiB", "TiB"];
+
+    if (bytes === 0) {
+      return `0 ${sizes[0]}`;
     }
-    if(bytes < 1024) {
+
+    const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10);
+
+    if (i === 0) {
+      return `${bytes} ${sizes[i]}`;
+    }
+    if (!sizes[i]) {
       return `${bytes} bytes`;
-    } else if (bytes < 1048576) {
-      return `${(bytes / 1024).toFixed(3)} KiB`;
-    } else if (bytes < 1073741824) {
-      return `${(bytes / 1048576).toFixed(3)} MiB`;
-    } else {
-      return `${(bytes / 1073741824).toFixed(3)} GiB`;
     }
+
+    return `${(bytes / (1024 ** i)).toFixed(1)} ${sizes[i]}`;
   }
 }
 
