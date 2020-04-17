@@ -181,6 +181,31 @@ class MemoryManager {
   }
 }
 
+function checkValidKey(key) {
+  if (typeof key !== "string" || key.length === 0) {
+    throw new Error("Property key it's not a string");
+  }
+}
+
+function checkValidValue(value) {
+  if (value === null) {
+    throw new Error("Can't set 'null' to cache value");
+  } else if (value === undefined) {
+    throw new Error("Can't set 'undefined' to cache value");
+  }
+}
+
+/**
+ * Get limit from options
+ * @param {options} options JustCache option
+ */
+function getLimit({ limit }) {
+  if (typeof limit !== "number" || (limit && limit < 0)) {
+    throw new Error("Property options limit is invalid");
+  }
+  return limit;
+}
+
 /**
  * Just Cache @class
  */
@@ -192,19 +217,24 @@ class JustCache {
     this._options = {};
 
     if (options.limit !== null && options.limit !== undefined) {
-      if (typeof options.limit !== "number" || (options.limit && options.limit < 0)) {
-        throw new Error("Property options limit is invalid");
-      }
-      this._options.limit = options.limit;
+      this._options.limit = getLimit(options);
     }
 
     if (options.ttl !== null && options.ttl !== undefined) {
       validateTtl(options.ttl);
-
       this._options.ttl = options.ttl;
     }
-
     this._options.ttl = options.ttl;
+  }
+
+  normalizeCache(valueSize) {
+    if ((this.size() + valueSize) > this._options.limit) {
+      const [firstKey] = this.keys();
+      if (firstKey) {
+        this.delete(firstKey);
+        this.normalizeCache(valueSize);
+      }
+    }
   }
 
   /**
@@ -214,15 +244,8 @@ class JustCache {
 	 * @param {number} ttl time to expire
 	 */
   put(key, value, ttl) {
-    if (typeof key !== "string" || key.length === 0) {
-      throw new Error("Property key it's not a string");
-    }
-
-    if (value === null) {
-      throw new Error("Can't set 'null' to cache value");
-    } else if (value === undefined) {
-      throw new Error("Can't set 'undefined' to cache value");
-    }
+    checkValidKey(key);
+    checkValidValue(value);
 
     // validate ttl case has setted
     if (ttl !== null && ttl !== undefined) {
@@ -234,28 +257,16 @@ class JustCache {
       return;
     }
 
-    const normalizeCache = (valueSize) => {
-      if ((this.size() + valueSize) > this._options.limit) {
-        const [firstKey] = this.keys();
-        if (firstKey) {
-          this.delete(firstKey);
-          normalizeCache(valueSize);
-        }
-      }
-    };
-
     if (this._options.limit !== null && this._options.limit !== undefined) {
       const valueSize = MemoryManager.getSize(value);
       if (valueSize > this._options.limit) {
         return;
       }
-      normalizeCache(valueSize);
+      this.normalizeCache(valueSize);
     }
 
     // clean cache time out case exists
-    if (this.has(key) && this._data[key].timeout) {
-      clearTimeout(this._data[key].timeout);
-    }
+    this.removeTtl(key);
 
     ttl = ttl || this._options.ttl;
     const expireMls = ttl * 1000;
@@ -281,19 +292,14 @@ class JustCache {
 	 */
   set(key, value, ttl) {
 
-    if (typeof key !== "string" || key.length === 0) {
-      throw new Error("Property key it's not a string");
-    }
+    checkValidKey(key);
 
+    // do not update until it is removed
     if (this.has(key)) {
       return;
     }
 
-    if (value === null) {
-      throw new Error("Can't set 'null' to cache value");
-    } else if (value === undefined) {
-      throw new Error("Can't set 'undefined' to cache value");
-    }
+    checkValidValue(value);
 
     if (ttl !== null && ttl !== undefined) {
       validateTtl(ttl);
@@ -303,22 +309,12 @@ class JustCache {
       return;
     }
 
-    const normalizeCache = (valueSize) => {
-      if ((this.size() + valueSize) > this._options.limit) {
-        const [firstKey] = this.keys();
-        if (firstKey) {
-          this.delete(firstKey);
-          normalizeCache(valueSize);
-        }
-      }
-    };
-
     if (this._options.limit !== null && this._options.limit !== undefined) {
       const valueSize = MemoryManager.getSize(value);
       if (valueSize > this._options.limit) {
         return;
       }
-      normalizeCache(valueSize);
+      this.normalizeCache(valueSize);
     }
 
     ttl = ttl || this._options.ttl;
@@ -349,11 +345,7 @@ class JustCache {
 	 * @param {string} key
 	 */
   has(key) {
-
-    if (typeof key !== "string" || key.length === 0) {
-      throw new Error("Property key it's not a string");
-    }
-
+    checkValidKey(key);
     return Boolean(this._data[key]);
   }
 
@@ -363,9 +355,7 @@ class JustCache {
 	 */
   get(key) {
 
-    if (typeof key !== "string" || key.length === 0) {
-      throw new Error("Property key it's not a string");
-    }
+    checkValidKey(key);
 
     const cached = this._data[key];
 
@@ -376,17 +366,20 @@ class JustCache {
     return this._data[key].value;
   }
 
+  removeTtl(key) {
+    checkValidKey(key);
+    if (this.has(key) && this._data[key].timeout) {
+      clearTimeout(this._data[key].timeout);
+    }
+  }
+
   /**
 	 * Remove from cache
 	 * @param {string} key
 	 */
   delete(key) {
-    if (typeof key !== "string" || key.length === 0) {
-      throw new Error("Property key it's not a string");
-    }
-    if (this.has(key) && this._data[key].timeout) {
-      clearTimeout(this._data[key].timeout);
-    }
+    checkValidKey(key);
+    this.removeTtl(key);
     delete this._data[key];
   }
 
@@ -413,7 +406,7 @@ class JustCache {
   size() {
     let bytes = 0;
     for (const key in this._data) {
-      bytes = MemoryManager.getSize(this._data[key].value) + bytes;
+      bytes += MemoryManager.getSize(this._data[key].value);
     }
     return bytes;
   }
