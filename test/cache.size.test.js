@@ -1,4 +1,4 @@
-/*!
+/* !
 * just-cache
 * Copyright(c) 2020 Gleisson Mattos
 * http://github.com/gleissonmattos
@@ -10,51 +10,51 @@ const JustCache = require("..");
 
 describe("Just Cache size", () => {
 
-	test("Should returns valid only string size", () => {
-		const cache = new JustCache();
+  test("Should returns valid only string size", () => {
+    const cache = new JustCache();
 
-		cache.put("key", "Message");
+    cache.put("key", "Message");
 
-		expect(cache.size()).toBe(14);
-		expect(cache.sizeText()).toBe("14 bytes");
-	});
+    expect(cache.size()).toBe(14);
+    expect(cache.sizeText()).toBe("14 bytes");
+  });
 
-	test("Should returns 0 to empty cache", () => {
-		const cache = new JustCache();
-		expect(cache.size()).toBe(0);
-		expect(cache.sizeText()).toBe("0 bytes");
-	});
+  test("Should returns 0 to empty cache", () => {
+    const cache = new JustCache();
+    expect(cache.size()).toBe(0);
+    expect(cache.sizeText()).toBe("0 bytes");
+  });
 
-	test("Should returns valid two data string size", () => {
-		const cache = new JustCache();
+  test("Should returns valid two data string size", () => {
+    const cache = new JustCache();
 
-		cache.put("key", "Message");
-		cache.put("key2", "me");
+    cache.put("key", "Message");
+    cache.put("key2", "me");
 
-		expect(cache.size()).toBe(18);
-		expect(cache.sizeText()).toBe("18 bytes");
-	});
+    expect(cache.size()).toBe(18);
+    expect(cache.sizeText()).toBe("18 bytes");
+  });
 
-	test("Should returns valid cache size", () => {
-		const cache = new JustCache();
+  test("Should returns valid cache size", () => {
+    const cache = new JustCache();
 
-		cache.put("key", {
-			field1: "Valeu 0",
-			field2: "Lorem I.",
-			field3: "  ",
-			field4: 12,
-			field5: [],
-			field6: ["a"],
-			field7: {
-				intoField1: "object"
-			}
-		});
+    cache.put("key", {
+      field1: "Valeu 0",
+      field2: "Lorem I.",
+      field3: "  ",
+      field4: 12,
+      field5: [],
+      field6: ["a"],
+      field7: {
+        intoField1: "object"
+      }
+    });
 
-		cache.put("key2", {});
-		cache.put("key3", "222");
-		cache.put("key4", 54654564);
+    cache.put("key2", {});
+    cache.put("key3", "222");
+    cache.put("key4", 54654564);
 
-		expect(cache.size()).toBe(70);
-		expect(cache.sizeText()).toBe("70 bytes");
-	});
+    expect(cache.size()).toBe(70);
+    expect(cache.sizeText()).toBe("70 bytes");
+  });
 });

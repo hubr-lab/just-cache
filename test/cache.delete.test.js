@@ -1,4 +1,4 @@
-/*!
+/* !
 * just-cache
 * Copyright(c) 2020 Gleisson Mattos
 * http://github.com/gleissonmattos
@@ -12,25 +12,25 @@ const faker = require("faker");
 
 describe("Just Cache delete", () => {
 
-	test("Should delete from just cache", () => {
-		const cache = new JustCache();
-		const key = faker.random.word();
-		const value = faker.random.word();
+  test("Should delete from just cache", () => {
+    const cache = new JustCache();
+    const key = faker.random.word();
+    const value = faker.random.word();
 
-		cache.set(key, value);
+    cache.set(key, value);
 
-		cache.delete(key);
-		expect(cache.has(key)).not.toBeTruthy();
-	});
+    cache.delete(key);
+    expect(cache.has(key)).not.toBeTruthy();
+  });
 
-	test("Should fail to invalid key", () => {
-		const cache = new JustCache();
+  test("Should fail to invalid key", () => {
+    const cache = new JustCache();
 
-		expect(() => cache.delete({})).toThrowError(Error);
-		expect(() => cache.delete(25)).toThrowError(Error);
-		expect(() => cache.delete([])).toThrowError(Error);
-		expect(() => cache.delete(null)).toThrowError(Error);
-		expect(() => cache.delete(undefined)).toThrowError(Error);
-		expect(() => cache.delete(new JustCache())).toThrowError(Error);
-	});
+    expect(() => cache.delete({})).toThrowError(Error);
+    expect(() => cache.delete(25)).toThrowError(Error);
+    expect(() => cache.delete([])).toThrowError(Error);
+    expect(() => cache.delete(null)).toThrowError(Error);
+    expect(() => cache.delete(undefined)).toThrowError(Error);
+    expect(() => cache.delete(new JustCache())).toThrowError(Error);
+  });
 });
