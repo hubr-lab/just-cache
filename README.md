@@ -10,9 +10,10 @@ const Just = require("just-cache");
 const cache = new Just();
 
 cache.set("message", "this text message");
-cache.put("message", "this new message");
+cache.put("message", { foo: "bar" });
+cache.set("message", true);
 
-cache.get("message"); // "this new message";
+cache.get("message"); // { foo: "bar" };
 
 ```
 

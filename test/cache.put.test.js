@@ -84,14 +84,14 @@ describe("Just Cache put", () => {
     }, 2000);
   });
 
-  test("Should fail to existent cache", () => {
+  test("Should update existing cache", () => {
     const cache = new JustCache();
     const key = faker.random.word();
     const value = faker.random.word();
 
     cache.put(key, value, 5);
     cache.put(key, "another value", 3);
-    expect(cache.has(key)).toBeTruthy();
+    expect(cache.get(key)).toBe("another value");
   });
 
   test("Should fail to invalid key value", () => {

@@ -216,7 +216,7 @@ class JustCache {
     }
 
     if (this.has(key)) {
-      throw new Error(`Cache already ${key} already exists. To update use put`);
+      return;
     }
 
     if (value === null) {

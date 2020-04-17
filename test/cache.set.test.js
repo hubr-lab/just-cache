@@ -21,6 +21,16 @@ describe("Just Cache set", () => {
     expect(cache.has(key)).toBeTruthy();
   });
 
+  test("Should not set to has existing key", () => {
+    const cache = new JustCache();
+    const key = faker.random.word();
+    const value = faker.random.word();
+
+    cache.set(key, value);
+    cache.set(key, "another value");
+    expect(cache.get(key)).toBe(value);
+  });
+
   test("Should success cache set object", () => {
     const cache = new JustCache();
     const key = faker.random.word();
@@ -82,15 +92,6 @@ describe("Just Cache set", () => {
       expect(cache.has(key)).toBe(false);
       done();
     }, 2000);
-  });
-
-  test("Should fail to existent cache", () => {
-    const cache = new JustCache();
-    const key = faker.random.word();
-    const value = faker.random.word();
-
-    cache.set(key, value);
-    expect(() => cache.set(key, "another value")).toThrowError(Error);
   });
 
   test("Should fail to invalid key value", () => {
