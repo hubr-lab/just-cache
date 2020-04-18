@@ -181,12 +181,20 @@ class MemoryManager {
   }
 }
 
+/**
+ * Check if cache key is valid
+ * @param {string} key
+ */
 function checkValidKey(key) {
   if (typeof key !== "string" || key.length === 0) {
     throw new Error("Property key it's not a string");
   }
 }
 
+/**
+ * Check if cache value is valid
+ * @param {*} value
+ */
 function checkValidValue(value) {
   if (value === null) {
     throw new Error("Can't set 'null' to cache value");
@@ -227,12 +235,21 @@ class JustCache {
     this._options.ttl = options.ttl;
   }
 
-  normalizeCache(valueSize) {
-    if ((this.size() + valueSize) > this._options.limit) {
+  /**
+   * Clean from cache old values based a size
+   * The value is
+   * @param {number} valueSize
+   */
+  normalizeCache(valueSize, limit) {
+    if (typeof valueSize !== "number") {
+      throw new Error("Value size must be a number");
+    }
+    const safeLimit = this._options.limit || getLimit({ limit });
+    if ((this.size() + valueSize) > safeLimit) {
       const [firstKey] = this.keys();
       if (firstKey) {
         this.delete(firstKey);
-        this.normalizeCache(valueSize);
+        this.normalizeCache(valueSize, limit);
       }
     }
   }
