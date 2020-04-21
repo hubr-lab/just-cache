@@ -32,6 +32,7 @@ $ npm install just-cache --save
 - High test coverage.
 - Automatic storage limit management.
 - Compatible with Typescript.
+- Persistent cache.
 
 ## Usage
 
