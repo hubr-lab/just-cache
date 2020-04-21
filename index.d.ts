@@ -7,11 +7,12 @@
 * http://www.opensource.org/licenses/mit-license.php
 */
 
-
 interface JustCacheOptions {
   ttl?: number;
   limit?: number;
 }
+
+type events = "load";
 
 declare class JustCache {
   constructor (options?: JustCacheOptions);
@@ -28,6 +29,7 @@ declare class JustCache {
   count(): number;
   size(): number;
   sizeText(): string;
+  on(event: events | symbol, listener: (...args: any[]) => void): this;
 }
 
 declare namespace JustCache {
