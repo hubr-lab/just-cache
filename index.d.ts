@@ -25,7 +25,6 @@ declare class JustCache {
   has(key: string): boolean;
   get<T = any>(key: string): T | null;
   delete(key: string): void;
-  keys(): string[];
   count(): number;
   size(): number;
   sizeText(): string;
